@@ -16,9 +16,14 @@ public class TutorialSmokeTest {
             Stage stage = new Stage();
             try {
                 new Main().start(stage);
-                if (!stage.isShowing() || !(stage.getScene().getRoot() instanceof Label label)
-                        || !label.getText().equals("Hello World!")) {
-                    throw new AssertionError("Hello World window did not open correctly");
+                if (!stage.isShowing() || stage.getScene().lookup("#userInput") == null
+                        || stage.getScene().lookup("#sendButton") == null) {
+                    throw new AssertionError("Chat controls are missing");
+                }
+                javafx.scene.layout.VBox dialogs = (javafx.scene.layout.VBox)
+                        stage.getScene().lookup("#dialogContainer");
+                if (dialogs.getChildren().size() != 1) {
+                    throw new AssertionError("Sample dialog is missing");
                 }
             } catch (Throwable error) {
                 failure.set(error);
