@@ -1,4 +1,5 @@
 import java.util.Collections;
+import java.util.ArrayList;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -26,7 +27,9 @@ public class DialogBox extends HBox {
 
     public static DialogBox getDukeDialog(String text, Image image) {
         DialogBox dialog = new DialogBox(text, image);
-        Collections.reverse(dialog.getChildren());
+        var children = new ArrayList<>(dialog.getChildren());
+        Collections.reverse(children);
+        dialog.getChildren().setAll(children);
         dialog.setAlignment(Pos.TOP_LEFT);
         return dialog;
     }

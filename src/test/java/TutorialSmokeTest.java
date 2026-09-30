@@ -22,8 +22,22 @@ public class TutorialSmokeTest {
                 }
                 javafx.scene.layout.VBox dialogs = (javafx.scene.layout.VBox)
                         stage.getScene().lookup("#dialogContainer");
-                if (dialogs.getChildren().size() != 1) {
-                    throw new AssertionError("Sample dialog is missing");
+                javafx.scene.control.TextField input = (javafx.scene.control.TextField)
+                        stage.getScene().lookup("#userInput");
+                javafx.scene.control.Button send = (javafx.scene.control.Button)
+                        stage.getScene().lookup("#sendButton");
+                input.setText("Hello Duke");
+                send.fire();
+                input.setText("Second message");
+                input.fireEvent(new javafx.event.ActionEvent());
+                if (dialogs.getChildren().size() != 4 || !input.getText().isEmpty()) {
+                    throw new AssertionError("Send and Enter must each append two dialogs and clear input");
+                }
+                javafx.scene.layout.HBox reply = (javafx.scene.layout.HBox) dialogs.getChildren().get(3);
+                if (!(reply.getChildren().get(0) instanceof javafx.scene.image.ImageView)
+                        || !(reply.getChildren().get(1) instanceof Label label)
+                        || !label.getText().equals("Duke heard: Second message")) {
+                    throw new AssertionError("Duke reply must be flipped and contain the response");
                 }
             } catch (Throwable error) {
                 failure.set(error);
