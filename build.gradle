@@ -49,9 +49,17 @@ dependencies {
     implementation("org.openjfx:javafx-graphics:${javaFxVersion}:linux")
 }
 
+sourceSets {
+    smokeTest {
+        java.srcDir 'src/smokeTest/java'
+        compileClasspath += sourceSets.main.output + configurations.runtimeClasspath
+        runtimeClasspath += output + compileClasspath
+    }
+}
+
 // Opens the real GUI, checks its controls, and closes it automatically.
 tasks.register('smokeTest', JavaExec) {
-    dependsOn testClasses
-    classpath = sourceSets.test.runtimeClasspath
+    dependsOn smokeTestClasses
+    classpath = sourceSets.smokeTest.runtimeClasspath
     mainClass = 'TutorialSmokeTest'
 }

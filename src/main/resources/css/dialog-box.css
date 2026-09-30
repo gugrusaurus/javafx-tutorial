@@ -1,5 +1,5 @@
 .label {
-    background:derive(yellow, -0.5);
+    background: derive(yellow, -10%);
     -fx-background-color: background;
     -fx-border-color: #d55e00 #009e73 #cc79a7 #0072b2;
     -fx-border-width: 2px;
@@ -15,15 +15,15 @@
 }
 
 .add-label {
-    -fx-background-color: yellow;
+    background: yellow;
 }
 
 .marked-label {
-    -fx-background-color: palegreen;
+    background: palegreen;
 }
 
 .delete-label {
-    -fx-background-color: lightpink;
+    background: lightpink;
 }
 
 #displayPicture {

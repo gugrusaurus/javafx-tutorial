@@ -39,6 +39,35 @@ public class TutorialSmokeTest {
                         || !label.getText().equals("Duke heard: Second message")) {
                     throw new AssertionError("Duke reply must be flipped and contain the response");
                 }
+                String[] commands = {"todo read", "deadline work", "event meeting", "mark 1", "delete 1", "hello"};
+                String[] styles = {"add-label", "add-label", "add-label", "marked-label", "delete-label", ""};
+                for (int i = 0; i < commands.length; i++) {
+                    input.setText(commands[i]);
+                    send.fire();
+                    javafx.scene.layout.HBox bubble = (javafx.scene.layout.HBox)
+                            dialogs.getChildren().get(dialogs.getChildren().size() - 1);
+                    Label response = (Label) bubble.getChildren().get(1);
+                    if (!styles[i].isEmpty() && !response.getStyleClass().contains(styles[i])) {
+                        throw new AssertionError("Missing command style: " + styles[i]);
+                    }
+                    if (styles[i].isEmpty() && response.getStyleClass().stream()
+                            .anyMatch(style -> style.equals("add-label") || style.equals("marked-label")
+                                    || style.equals("delete-label"))) {
+                        throw new AssertionError("Command style leaked into a regular reply");
+                    }
+                }
+                javafx.scene.control.ScrollPane scroll = (javafx.scene.control.ScrollPane)
+                        stage.getScene().lookup("#scrollPane");
+                if (!scroll.isFitToWidth() || stage.getMinWidth() < 400 || stage.getMinHeight() < 200) {
+                    throw new AssertionError("Resize constraints are missing");
+                }
+                stage.setWidth(650);
+                stage.setHeight(750);
+                stage.getScene().getRoot().applyCss();
+                stage.getScene().getRoot().layout();
+                if (scroll.getViewportBounds().getWidth() <= 0) {
+                    throw new AssertionError("Scroll viewport is not laid out");
+                }
             } catch (Throwable error) {
                 failure.set(error);
             } finally {
